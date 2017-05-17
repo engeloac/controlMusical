@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 /**
  *
  * @author sirbobby
@@ -135,6 +136,8 @@ public class TaddDisc extends javax.swing.JFrame {
         list.forEach((temporalList) -> {
             this.jComboBox1.addItem(temporalList.getName());
         });
+        entityManager.close();
+        entityManagerFactory.close();
     }
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
@@ -157,11 +160,22 @@ public class TaddDisc extends javax.swing.JFrame {
         com.usr.objects.Disc disc = new com.usr.objects.Disc();
         com.usr.services.Find find = com.usr.services.Find.getInstance();
         com.usr.objects.Artist artist = find.findArtist(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
+        entityManagerFactory = Persistence.createEntityManagerFactory("controlMusicalPU");
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(artist);
         
         disc.setName(jTextField1.getText());
         disc.setYear(Integer.parseInt(jTextField2.getText()));
         disc.setProducedby(jTextField3.getText());
+        disc. setNumbersongs(Integer.parseInt(jTextField4.getText()));
+        artist.setNumberdiscs(artist.getNumberdiscs() + 1);
         disc.setArtistFk(artist);
+        entityManager.persist(disc);
+        JOptionPane.showMessageDialog(null, "Registrado Correctamente");
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
@@ -192,10 +206,8 @@ public class TaddDisc extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TaddDisc().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TaddDisc().setVisible(true);
         });
     }
     
