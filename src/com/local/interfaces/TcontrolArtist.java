@@ -9,6 +9,8 @@ import com.usr.objects.Artist;
 import com.usr.objects.Disc;
 import com.usr.objects.Song;
 import com.usr.services.Find;
+import java.awt.Cursor;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -77,6 +79,9 @@ public class TcontrolArtist extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextField2MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTextField2MouseEntered(evt);
+            }
         });
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -95,14 +100,14 @@ public class TcontrolArtist extends javax.swing.JFrame {
                 .addContainerGap(104, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(96, 96, 96))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(91, 91, 91)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(265, Short.MAX_VALUE)))
+                    .addGap(106, 106, 106)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(267, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,12 +159,24 @@ public class TcontrolArtist extends javax.swing.JFrame {
 
     private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
         // TODO add your handling code here:
-        jTextField2.setText("");
+        if ("                          Buscar...".equals(jTextField2.getText())) jTextField2.setText("");
+        
+        if (isArtistFind || isDiscfind || isSongFind) {
+            JOptionPane.showMessageDialog(null, "Abro venta con informacion");
+        }
+        else {
+            
+        }
+        
     }//GEN-LAST:event_jTextField2MouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         // TODO add your handling code here:
         jTextField2.setText("                          Buscar...");
+        jTextField2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        isArtistFind = false;
+        isDiscfind = false;
+        isSongFind = false;
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
@@ -172,14 +189,18 @@ public class TcontrolArtist extends javax.swing.JFrame {
         song = find.findSong(jTextField2.getText());
         disc = find.findDisc(jTextField2.getText());
         artist = find.findArtist(jTextField2.getText());
-        if (song != null) {
-            System.out.println("Cancion Encontrada");
+        isSongFind = song != null;
+        isDiscfind = disc != null;
+        isArtistFind = artist != null;
+        
+        if (song != null || disc != null || artist != null) {
+            jTextField2.setCursor(new Cursor(DEFAULT_CURSOR));
+            jTextField2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 0, 102), new java.awt.Color(255, 0, 102), new java.awt.Color(255, 0, 102), new java.awt.Color(255, 0, 102)));
         }
-        if (disc != null) {
-            System.out.println("Disco Encontrado");
-        }
-        if (artist != null) {
-            System.out.println("Artista Encontrado");
+        else {
+            
+            jTextField2.setCursor(new Cursor(TEXT_CURSOR));
+            jTextField2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         }
     }//GEN-LAST:event_jTextField2KeyReleased
 
@@ -190,6 +211,10 @@ public class TcontrolArtist extends javax.swing.JFrame {
         frame.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jTextField2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2MouseEntered
 
     /**
      * @param args the command line arguments
@@ -229,6 +254,9 @@ public class TcontrolArtist extends javax.swing.JFrame {
     private Song song;
     private Artist artist;
     private Disc disc;
+    private boolean isSongFind;
+    private boolean isArtistFind;
+    private boolean isDiscfind;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;

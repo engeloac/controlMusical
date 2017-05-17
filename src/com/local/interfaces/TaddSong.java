@@ -174,6 +174,10 @@ public class TaddSong extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+        TmainWindow frame = new TmainWindow();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        dispose();
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jComboBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox1MouseClicked
@@ -209,10 +213,8 @@ public class TaddSong extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TaddSong().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TaddSong().setVisible(true);
         });
     }
     
