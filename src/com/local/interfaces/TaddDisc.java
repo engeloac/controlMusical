@@ -158,12 +158,12 @@ public class TaddDisc extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
         com.usr.objects.Disc disc = new com.usr.objects.Disc();
-        com.usr.services.Find find = com.usr.services.Find.getInstance();
-        com.usr.objects.Artist artist = find.findArtist(jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
         entityManagerFactory = Persistence.createEntityManagerFactory("controlMusicalPU");
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.merge(artist);
+        com.usr.objects.Artist artist = entityManager.find(Artist.class, jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
+        
+        //entityManager.merge(artist);
         
         disc.setName(jTextField1.getText());
         disc.setYear(Integer.parseInt(jTextField2.getText()));
@@ -172,7 +172,7 @@ public class TaddDisc extends javax.swing.JFrame {
         artist.setNumberdiscs(artist.getNumberdiscs() + 1);
         disc.setArtistFk(artist);
         entityManager.persist(disc);
-        JOptionPane.showMessageDialog(null, "Registrado Correctamente");
+        JOptionPane.showMessageDialog(null, "Registrado Correctamente"+artist.getNumberdiscs());
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();
