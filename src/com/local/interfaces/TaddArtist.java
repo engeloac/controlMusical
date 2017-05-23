@@ -65,6 +65,9 @@ public class TaddArtist extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1MouseEntered(evt);
+            }
         });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,7 +146,6 @@ public class TaddArtist extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
-        // TODO add your handling code here:
         boolean isValidLong = true;
         boolean isEmployeeNotExist;
         boolean isPopActive = false;
@@ -196,6 +198,10 @@ public class TaddArtist extends javax.swing.JFrame {
         frame.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseEntered
 
     /**
      * @param args the command line arguments

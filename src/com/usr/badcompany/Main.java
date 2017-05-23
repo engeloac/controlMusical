@@ -5,6 +5,7 @@
  */
 package com.usr.badcompany;
 
+import com.local.interfaces.TaddSong;
 import com.local.interfaces.TmainWindow;
 
 /**
@@ -18,7 +19,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        TmainWindow frame = new TmainWindow();
+        TaddSong frame = new TaddSong();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
        

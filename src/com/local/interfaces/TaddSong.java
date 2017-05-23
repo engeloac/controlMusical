@@ -6,7 +6,10 @@
 package com.local.interfaces;
 
 import com.usr.objects.Artist;
+import com.usr.objects.Disc;
+import com.usr.services.Find;
 import java.awt.Font;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author sirbobby
  */
+
 public class TaddSong extends javax.swing.JFrame {
 
     /**
@@ -27,11 +31,13 @@ public class TaddSong extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         //
         this.jComboBox1.removeAllItems();
+        this.jComboBox2.removeAllItems();
         entityManagerFactory = Persistence.createEntityManagerFactory("controlMusicalPU");
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        list = entityManager.createNamedQuery("Artist.findAll",Artist.class).getResultList();
-        list.forEach((temporalList) -> {
+        listArtist = entityManager.createNamedQuery("Artist.findAll",Artist.class).getResultList();
+        this.jComboBox2.addItem("");
+        listArtist.forEach((temporalList) -> {
             this.jComboBox2.addItem(temporalList.getName());
         });
         entityManager.close();
@@ -94,6 +100,16 @@ public class TaddSong extends javax.swing.JFrame {
         });
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 230, 40));
 
+        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox2ItemStateChanged(evt);
+            }
+        });
+        jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBox2MouseClicked(evt);
+            }
+        });
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -110,6 +126,11 @@ public class TaddSong extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, 180, 40));
 
         jButton2.setText("Guardar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 160, 40));
 
         jTextField3.setText("      Minutos");
@@ -158,18 +179,19 @@ public class TaddSong extends javax.swing.JFrame {
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
-        
         JOptionPane.showMessageDialog(null, "Ejemplo Minutos: 2:30 \n Ejemplo Segundos: 120");
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jTextField3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField3MouseClicked
         // TODO add your handling code here:
-        jTextField3.setText("");
+        if ("      Minutos".equals(jTextField3.getText())) jTextField3.setText("");
+        if ("".equals(jTextField1.getText())) jTextField1.setText("   Segundos");
     }//GEN-LAST:event_jTextField3MouseClicked
 
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
         // TODO add your handling code here:
-        jTextField1.setText("");
+        if ("   Segundos".equals(jTextField1.getText())) jTextField1.setText("");
+        if ("".equals(jTextField3.getText())) jTextField3.setText("      Minutos");
     }//GEN-LAST:event_jTextField1MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -184,6 +206,86 @@ public class TaddSong extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_jComboBox1MouseClicked
+
+    private void jComboBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2MouseClicked
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+        // TODO add your handling code here:
+        String text;
+        text = (String) jComboBox2.getSelectedItem().toString();
+        Find find = Find.getInstance();
+        int localIterator = 0;
+        if(!"".equals(text)) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("controlMusicalPU");
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+            Artist artist = find.findArtist(text);
+            discCollection = artist.getDiscCollection();
+            if (discCollection != null) {
+                jComboBox1.removeAllItems();
+                for (Disc temporalList : discCollection) {
+                    jComboBox1.addItem(temporalList.getName());
+                }
+            }
+            
+        }
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+        com.usr.objects.Song song = new com.usr.objects.Song();
+        com.usr.objects.Artist artist;
+        com.usr.objects.Disc disc;
+        int minutes;
+        int seconds;
+        int stringLength;
+        String converted;
+        String converted1;
+        String text;
+        
+        converted = "";
+        converted1 = "";
+        text = jTextField3.getText();
+        stringLength = text.length();
+        
+        for (int i = 0; i < stringLength;i++) {
+            if(':'==text.charAt(i)) {
+                for (int n = 0;n < i ;n++) {
+                    converted = converted + text.charAt(n);
+                }
+                for (int n = i+1;n < stringLength ;n++) {
+                    converted1 = converted1 + text.charAt(n);
+                    JOptionPane.showMessageDialog(null, converted1);
+                }
+            }
+        }
+        artist  = entityManager.find(Artist.class, jComboBox2.getItemAt(jComboBox2.getSelectedIndex()));
+        disc = entityManager.find(Disc.class, jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
+        
+        entityManager.merge(artist);
+        entityManager.merge(artist);
+        
+        song.setArtistFk(artist);
+        song.setDiscFk(disc);
+        song.setTitle(jTextField2.getText());
+        song.setTime(converted + " min-"+converted1+" seg");
+        entityManager.persist(song);
+        JOptionPane.showMessageDialog(null, "Registrada Correctamente");
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
+        
+        jTextField1.setText("   Segundos");
+        jTextField2.setText("");
+        jTextField3.setText("      Minutos");
+        try {
+            jComboBox1.removeAllItems();
+            jComboBox2.removeAllItems();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -221,7 +323,8 @@ public class TaddSong extends javax.swing.JFrame {
     private Font font;
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    List<Artist> list;
+    private final List<Artist> listArtist;
+    private Collection<Disc> discCollection;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

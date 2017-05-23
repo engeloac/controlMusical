@@ -163,7 +163,7 @@ public class TaddDisc extends javax.swing.JFrame {
         entityManager.getTransaction().begin();
         com.usr.objects.Artist artist = entityManager.find(Artist.class, jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
         
-        //entityManager.merge(artist);
+        entityManager.merge(artist);
         
         disc.setName(jTextField1.getText());
         disc.setYear(Integer.parseInt(jTextField2.getText()));
